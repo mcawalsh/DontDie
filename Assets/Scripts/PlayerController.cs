@@ -11,9 +11,12 @@ public class PlayerController : MonoBehaviour
 
 	public GameObject[] projectiles;
 
+	private Animator animator;
+
 	private void Start()
 	{
 		rb = GetComponent<Rigidbody2D>();
+		animator = GetComponent<Animator>();
 	}
 
 	void Update()
@@ -30,6 +33,15 @@ public class PlayerController : MonoBehaviour
 	// This is where you should put all your physics based adjustments
 	private void FixedUpdate()
 	{
-		rb.MovePosition(rb.position + moveVelocity * Time.fixedDeltaTime);
+		if (moveVelocity != Vector2.zero)
+		{
+			rb.MovePosition(rb.position + moveVelocity * Time.fixedDeltaTime);
+			animator.SetFloat("moveX", moveVelocity.x);
+			animator.SetFloat("moveY", moveVelocity.y);
+			animator.SetBool("moving", true);
+		} else
+		{
+			animator.SetBool("moving", true);
+		}
 	}
 }

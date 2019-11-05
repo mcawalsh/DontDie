@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     void Start()
 	{
 		InitialisGrid();
-		InitialisePlayer();
+		// InitialisePlayer();
 	}
 
 	private void InitialisePlayer()
