@@ -39,9 +39,10 @@ public class PlayerController : MonoBehaviour
 			animator.SetFloat("moveX", moveVelocity.x);
 			animator.SetFloat("moveY", moveVelocity.y);
 			animator.SetBool("moving", true);
-		} else
+		}
+		else
 		{
-			animator.SetBool("moving", true);
+			animator.SetBool("moving", false);
 		}
 	}
 }

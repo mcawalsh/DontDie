@@ -173,7 +173,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -378,7 +378,7 @@ GameObject:
   - component: {fileID: 1806060472}
   - component: {fileID: 1806060471}
   m_Layer: 0
-  m_Name: Items
+  m_Name: Collision
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -454,14 +454,38 @@ Tilemap:
   m_Enabled: 1
   m_Tiles: {}
   m_AnimatedTiles: {}
-  m_TileAssetArray: []
-  m_TileSpriteArray: []
-  m_TileMatrixArray: []
-  m_TileColorArray: []
+  m_TileAssetArray:
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  m_TileSpriteArray:
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  m_TileMatrixArray:
+  - m_RefCount: 0
+    m_Data:
+      e00: NaN
+      e01: NaN
+      e02: -2.1567587e-29
+      e03: 0
+      e10: NaN
+      e11: NaN
+      e12: 3.35e-43
+      e13: 0
+      e20: 0
+      e21: -2.1567563e-29
+      e22: 0
+      e23: 0
+      e30: 0
+      e31: 3.35e-43
+      e32: 0
+      e33: 0
+  m_TileColorArray:
+  - m_RefCount: 0
+    m_Data: {r: 1.964742e-31, g: 1.964742e-31, b: 1.964742e-31, a: 1.964742e-31}
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Origin: {x: 0, y: 0, z: 0}
-  m_Size: {x: 0, y: 0, z: 1}
+  m_Origin: {x: -12, y: -5, z: 0}
+  m_Size: {x: 12, y: 8, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
@@ -556,9 +580,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   groundMap: {fileID: 1479278606}
-  itemMap: {fileID: 1806060472}
+  collisionMap: {fileID: 1806060472}
   groundTile: {fileID: 11400000, guid: b1e0a648f2bc2704bb461bf232aa8dc0, type: 2}
-  wallTile: {fileID: 0}
+  wallTile: {fileID: 11400000, guid: c2d42d01ce7b9be458d3a943e0f3e762, type: 2}
   player: {fileID: 3856513522422561338, guid: 89b4e62ece77db54fb672f64a43bbd3d, type: 3}
 --- !u!4 &2073890556
 Transform:
@@ -650,6 +674,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SortingLayer
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3856513522422561343, guid: 89b4e62ece77db54fb672f64a43bbd3d,
+        type: 3}
+      propertyPath: m_BodyType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3856513522422561343, guid: 89b4e62ece77db54fb672f64a43bbd3d,
+        type: 3}
+      propertyPath: m_GravityScale
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3856513522422561341, guid: 89b4e62ece77db54fb672f64a43bbd3d,
         type: 3}
