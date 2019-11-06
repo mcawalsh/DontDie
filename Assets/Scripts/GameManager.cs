@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.Tilemaps;
 
 public class GameManager : MonoBehaviour
@@ -11,13 +12,17 @@ public class GameManager : MonoBehaviour
 
 	public GameObject player;
 
-	int gridWidth = 10;
-	int gridHeight = 10;
+	[Min(10)]
+	public int gridWidth = 100;
+	[Min(10)]
+	public int gridHeight = 100;
+
+	private DungeonMap map;
 
 	void Start()
 	{
-		InitialiseGrid();
-		InitialiseWalls();
+		map = DungeonGenerator.GenerateDungeon(gridWidth, gridHeight);
+		DrawMap(map.Tiles);
 		InitialisePlayer();
 		AddCollisions();
 	}
@@ -27,32 +32,25 @@ public class GameManager : MonoBehaviour
 		player.gameObject.transform.SetPositionAndRotation(new Vector3(0, 0, 0), Quaternion.identity);
 	}
 
-	private void InitialiseGrid()
+	private void DrawMap(DungeonTile[,] tiles)
 	{
-		for (int x = 0; x < gridWidth; x++)
+		for(int x = 0; x < gridWidth; x++)
 		{
 			for (int y = 0; y < gridHeight; y++)
 			{
-				groundMap.SetTile(new Vector3Int(x - gridWidth / 2, y - gridHeight / 2, 0), groundTile);
-			}
-		}
-	}
+				DungeonTile tile = tiles[x, y];
 
-	private void InitialiseWalls()
-	{
-		for (int y = -1; y < gridHeight +1; y++)
-		{
-			if (y < 0 || y >= gridHeight)
-			{
-				for (int x = -1; x < gridWidth + 1; x++)
+				switch (tile.TileType)
 				{
-					collisionMap.SetTile(new Vector3Int(x - gridWidth / 2, y - gridHeight / 2, 0), wallTile);
+					case TileType.Floor:
+						groundMap.SetTile(new Vector3Int(x - gridWidth / 2, y - gridHeight / 2, 0), groundTile);
+						break;
+					case TileType.Wall:
+						collisionMap.SetTile(new Vector3Int(x - gridWidth / 2, y - gridHeight / 2, 0), wallTile);
+						break;
+					default:
+						break;
 				}
-			}
-			else
-			{
-				collisionMap.SetTile(new Vector3Int(-1 - gridWidth / 2, y - gridHeight / 2, 0), wallTile);
-				collisionMap.SetTile(new Vector3Int(gridWidth - gridWidth / 2, y - gridHeight / 2, 0), wallTile);
 			}
 		}
 	}
@@ -68,9 +66,4 @@ public class GameManager : MonoBehaviour
 
 		var comp = collisionMap.gameObject.AddComponent<CompositeCollider2D>();
 	}
-
-	void Update()
-    {
-        
-    }
 }
