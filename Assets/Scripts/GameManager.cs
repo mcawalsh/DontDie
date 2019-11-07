@@ -17,11 +17,13 @@ public class GameManager : MonoBehaviour
 	[Min(10)]
 	public int gridHeight = 100;
 
+	private DungeonGenerator generator;
 	private DungeonMap map;
 
 	void Start()
 	{
-		map = DungeonGenerator.GenerateDungeon(gridWidth, gridHeight);
+		generator = new DungeonGenerator(gridWidth, gridHeight);
+		map = generator.GenerateDungeon();
 		DrawMap(map.Tiles);
 		InitialisePlayer();
 		AddCollisions();
@@ -34,22 +36,25 @@ public class GameManager : MonoBehaviour
 
 	private void DrawMap(DungeonTile[,] tiles)
 	{
-		for(int x = 0; x < gridWidth; x++)
+		for (int x = 0; x < gridWidth; x++)
 		{
 			for (int y = 0; y < gridHeight; y++)
 			{
 				DungeonTile tile = tiles[x, y];
 
-				switch (tile.TileType)
+				if (tile != null)
 				{
-					case TileType.Floor:
-						groundMap.SetTile(new Vector3Int(x - gridWidth / 2, y - gridHeight / 2, 0), groundTile);
-						break;
-					case TileType.Wall:
-						collisionMap.SetTile(new Vector3Int(x - gridWidth / 2, y - gridHeight / 2, 0), wallTile);
-						break;
-					default:
-						break;
+					switch (tile.TileType)
+					{
+						case TileType.Floor:
+							groundMap.SetTile(new Vector3Int(x - gridWidth / 2, y - gridHeight / 2, 0), groundTile);
+							break;
+						case TileType.Wall:
+							collisionMap.SetTile(new Vector3Int(x - gridWidth / 2, y - gridHeight / 2, 0), wallTile);
+							break;
+						default:
+							break;
+					}
 				}
 			}
 		}

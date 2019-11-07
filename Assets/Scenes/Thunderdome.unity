@@ -584,6 +584,8 @@ MonoBehaviour:
   groundTile: {fileID: 11400000, guid: b1e0a648f2bc2704bb461bf232aa8dc0, type: 2}
   wallTile: {fileID: 11400000, guid: c2d42d01ce7b9be458d3a943e0f3e762, type: 2}
   player: {fileID: 3856513522422561338, guid: 89b4e62ece77db54fb672f64a43bbd3d, type: 3}
+  gridWidth: 100
+  gridHeight: 100
 --- !u!4 &2073890556
 Transform:
   m_ObjectHideFlags: 0
