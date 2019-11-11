@@ -1,13 +1,17 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Corridor
 {
-	public Vector2Int Start;
-	public Vector2Int End;
+	public Vector2Int start;
+	public Vector2Int end;
+
+	public List<Vector2Int> wallTiles;
 
 	public Corridor(Vector2Int start, Vector2Int end)
 	{
-		this.Start = start;
-		this.End = end;
+		this.start = start;
+		this.end = end;
+		this.wallTiles = new List<Vector2Int>();
 	}
 }
