@@ -35,4 +35,29 @@ public class Room
 
 		return result;
 	}
+
+	public List<Vector2Int> GetWallPositions(int scale)
+	{
+		var result = new List<Vector2Int>();
+
+		// Scale Origin -- Origin.x * scale - scale = Room Origin
+		var scaledOrigin = new Vector2Int(Origin.x * scale - scale - 1, Origin.y * scale - scale - 1);
+
+		for (int heightPos = 0; heightPos <= Height * scale + 2; heightPos++)
+		{
+			if (heightPos == 0 || heightPos == (Height * scale + 2))
+			{
+				for (int widthPos = 0; widthPos <= Width * scale + 2; widthPos++)
+				{
+					result.Add(new Vector2Int(scaledOrigin.x + widthPos, scaledOrigin.y + heightPos));
+				}
+			} else
+			{
+				result.Add(new Vector2Int(scaledOrigin.x, scaledOrigin.y + heightPos)); // Left Wall
+				result.Add(new Vector2Int(scaledOrigin.x + Width * scale + 2, scaledOrigin.y + heightPos)); // Right Wall
+			}
+		}
+
+		return result;
+	}
 }

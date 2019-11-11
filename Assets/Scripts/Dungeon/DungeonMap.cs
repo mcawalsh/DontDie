@@ -18,6 +18,24 @@ public class DungeonMap
 		NumberOfRooms = 0;
 		this.Rooms = new List<Room>();
 		this.corridors = new List<Corridor>();
+
+		InitialiseTiles();
+	}
+
+	private void InitialiseTiles()
+	{
+		for (int x = 0; x < Tiles.GetLength(0); x++)
+		{
+			for (int y = 0; y < Tiles.GetLength(1); y++)
+			{
+				Tiles[x, y] = new DungeonTile() { TileType = TileType.Empty };
+			}
+		}
+	}
+
+	internal void SetTile(Vector2Int pos, TileType value)
+	{
+		SetTile(pos.x, pos.y, value);
 	}
 
 	internal void SetTile(int x, int y, TileType value)
@@ -33,6 +51,11 @@ public class DungeonMap
 
 	internal DungeonTile GetTile(Vector2Int pos)
 	{
-		return Tiles[pos.x, pos.y];
+		return GetTile(pos.x, pos.y);
+	}
+
+	internal DungeonTile GetTile(int x, int y)
+	{
+		return Tiles[x, y];
 	}
 }

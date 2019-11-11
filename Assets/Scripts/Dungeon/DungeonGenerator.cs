@@ -139,11 +139,28 @@ public class DungeonGenerator
 					SetScaledTile(map, roomX, roomY, TileType.Floor);
 				}
 			}
+
+			CreateWallTiles(room);
 		}
 
 		foreach (var corridor in map.corridors)
 		{
 			CreateCorridorTile(corridor);
+		}
+	}
+
+	private void CreateWallTiles(Room room)
+	{
+		var positions = room.GetWallPositions(scale);
+
+		foreach (var pos in positions)
+		{
+			DungeonTile tile = map.GetTile(pos);
+
+			if (tile.TileType == TileType.Empty)
+			{
+				map.SetTile(pos, TileType.Wall);
+			}
 		}
 	}
 
@@ -270,7 +287,6 @@ public class DungeonGenerator
 		{
 			foreach (var l in leaf.Children)
 				SplitLeaf(l);
-
 		}
 		else
 		{
