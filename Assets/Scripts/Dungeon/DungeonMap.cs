@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class DungeonMap
 {
@@ -11,9 +12,9 @@ public class DungeonMap
 
 	public int NumberOfRooms { get; set; }
 
-	public DungeonMap(int width, int height)
+	public DungeonMap(int width, int height, int scale)
 	{
-		this.Tiles = new DungeonTile[width, height];
+		this.Tiles = new DungeonTile[width * scale, height * scale];
 		NumberOfRooms = 0;
 		this.Rooms = new List<Room>();
 		this.corridors = new List<Corridor>();
@@ -24,9 +25,14 @@ public class DungeonMap
 		var tile = Tiles[x, y];
 		if (tile == null)
 			tile = new DungeonTile();
-		
+
 		tile.TileType = value;
 
 		Tiles[x, y] = tile;
+	}
+
+	internal DungeonTile GetTile(Vector2Int pos)
+	{
+		return Tiles[pos.x, pos.y];
 	}
 }

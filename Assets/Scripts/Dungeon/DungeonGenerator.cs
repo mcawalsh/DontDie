@@ -1,32 +1,78 @@
 ﻿using System;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class DungeonGenerator
 {
 	public int width;
 	public int height;
+	public int scale;
 	[Min(1)]
 	public int minRooms = 1;
 	public int maxRooms = 25;
 	DungeonMap map;
 
-	public DungeonGenerator(int width, int height)
+	public DungeonGenerator(int width, int height, int gridScale)
 	{
 		this.width = width;
 		this.height = height;
-		map = new DungeonMap(width, height);
+		this.scale = gridScale;
+
+		map = new DungeonMap(width, height, scale);
 	}
 
 	internal DungeonMap GenerateDungeon()
 	{
 		GenerateLeaves();
 		GenerateRooms(map.Leaf);
-		GenerateCorridors(map.Leaf);
 
 		GenerateTiles();
 
 		return map;
+	}
+
+	private void GenerateWalls()
+	{
+		foreach(var room in map.Rooms)
+		{
+			SetRoomWallTiles(room);
+		}
+
+		foreach(var hall in map.corridors)
+		{
+			SetCorridorWallTiles(hall);
+		}
+	}
+
+	private void SetCorridorWallTiles(Corridor hall)
+	{
+		
+	}
+
+	private bool isDone = false;
+
+	private void SetRoomWallTiles(Room room)
+	{
+		TileType wallType = TileType.Wall;
+
+		if (!isDone)
+		{
+			wallType = TileType.Empty;
+			isDone = true;
+		}
+
+		var roomPositions = room.GetSurroundPositions();
+
+		foreach (var pos in roomPositions)
+		{
+			var tile = map.GetTile(pos);
+
+			if (tile == null || tile.TileType == TileType.Empty)
+			{
+				map.SetTile(pos.x, pos.y, wallType);
+			}
+		}
 	}
 
 	private void GenerateCorridors(Leaf leaf)
@@ -68,15 +114,29 @@ public class DungeonGenerator
 		}
 	}
 
+	private void SetScaledTile(DungeonMap theMap, int x, int y, TileType tileType)
+	{
+		for (int xScale = 0; xScale < scale; xScale++)
+		{
+			for (int yScale = 0; yScale < scale; yScale++)
+			{
+				theMap.SetTile(x + xScale, y + yScale, tileType);
+			}
+		}
+	}
+
 	private void GenerateTiles()
 	{
 		foreach (var room in map.Rooms)
 		{
-			for (int x = 0; x < room.Width; x++)
+			for (int x = 0; x < room.Width * scale; x++)
 			{
-				for (int y = 0; y < room.Height; y++)
+				for (int y = 0; y < room.Height * scale; y++)
 				{
-					map.SetTile(x + room.Origin.x - 1, y + room.Origin.y - 1, TileType.Floor);
+					int roomX = x + room.Origin.x * scale - scale;
+					int roomY = y + room.Origin.y * scale - scale;
+
+					SetScaledTile(map, roomX, roomY, TileType.Floor);
 				}
 			}
 		}
@@ -92,90 +152,100 @@ public class DungeonGenerator
 		var start = corridor.Start;
 		var end = corridor.End;
 
-		var width = Mathf.Clamp(end.x - start.x, 1, 200);
-		var height = Mathf.Clamp(end.y - start.y, 1, 200);
+		var width = (end.x - start.x) * scale;
+		var height = (end.y - start.y) * scale;
 
 		// ALWAYS DRAW TILES LEFT TO RIGHT, TOP TO BOTTOM
-
 		if (width < 0) // X is End to Start
 		{
 			if (height < 0) // Drawing End to Start
 			{
 				for (int x = 0; x < Math.Abs(width); x++)
 				{
-					map.SetTile(end.x + x, start.y, TileType.Wall);
+					SetScaledTile(map, end.x * scale + x, end.y * scale, TileType.Floor);
 				}
 
 				for (int y = 0; y < Math.Abs(height); y++)
 				{
-					map.SetTile(start.x, start.y + y, TileType.Wall);
+					SetScaledTile(map, start.x * scale, start.y * scale + y, TileType.Floor);
 				}
 			}
-			else // Drawing End to Start
+			else if (height > 0) // Drawing End to Start
 			{
 				for (int x = 0; x < Math.Abs(width); x++)
 				{
-					map.SetTile(end.x + x, start.y, TileType.Wall);
+					SetScaledTile(map, end.x * scale + x, start.y * scale, TileType.Floor);
 				}
 
 				for (int y = 0; y < Math.Abs(height); y++)
 				{
-					map.SetTile(end.x, start.y + y, TileType.Wall);
+					SetScaledTile(map, end.x * scale, start.y * scale + y, TileType.Floor);
+				}
+			}
+			else // height == 0
+			{
+				for (int x = 0; x < Math.Abs(width); x++)
+				{
+					SetScaledTile(map, end.x * scale + x, end.y * scale, TileType.Floor);
 				}
 			}
 		}
-		else // X is Start to End
+		else if (width > 0)// X is Start to End
 		{
 			if (height < 0) // Drawing End to Start
 			{
 				for (int x = 0; x < Math.Abs(width); x++)
 				{
-					map.SetTile(end.x + x, end.y, TileType.Wall);
+					SetScaledTile(map, start.x * scale + x, start.y * scale, TileType.Floor);
 				}
 
-				for (int y = 0; y < Math.Abs(height); y++)
+				for (int y = 0; y < Math.Abs(height) + 1; y++)
 				{
-					map.SetTile(end.x, start.y + y, TileType.Wall);
+					SetScaledTile(map, end.x * scale, end.y * scale + y, TileType.Floor);
 				}
 			}
-			else // Drawing Start to End
+			else if (height > 0)// Drawing Start to End
 			{
 				for (int x = 0; x < Math.Abs(width); x++)
 				{
-					map.SetTile(start.x + x, start.y, TileType.Wall);
+					SetScaledTile(map, start.x * scale + x, start.y * scale, TileType.Floor);
 				}
 				for (int y = 0; y < Math.Abs(height); y++)
 				{
-					map.SetTile(end.x, start.y + y, TileType.Wall);
+					SetScaledTile(map, end.x * scale, start.y * scale + y, TileType.Floor);
 				}
 			}
-		}
-	}
-
-	private void GenerateTiles(Leaf parentLeaf)
-	{
-		foreach (var leaf in parentLeaf.Children)
-		{
-			if (leaf.Children == null || leaf.Children.Count() == 0)
+			else // height == 0
 			{
-				// Draw the tile
-				GenerateLeafTiles(leaf);
+				for (int x = 0; x < Math.Abs(width); x++)
+				{
+					SetScaledTile(map, start.x * scale + x, start.y * scale, TileType.Floor);
+				}
 			}
 
-			foreach (var l in leaf.Children)
-			{
-				GenerateTiles(l);
-			}
 		}
-	}
-
-	private void GenerateLeafTiles(Leaf leaf)
-	{
-		for (int x = 0; x < leaf.Width; x++)
+		else // width = 0
 		{
-			for (int y = 0; y < leaf.Height; y++)
+			if (height > 0)
 			{
-				map.SetTile(x + leaf.Origin.x, y + leaf.Origin.y, TileType.Floor);
+				for (int y = 0; y < Math.Abs(height); y++)
+				{
+					SetScaledTile(map, end.x * scale, start.y * scale + y, TileType.Floor);
+				}
+			}
+			else if (height < 0)
+			{
+				for (int y = 0; y < Math.Abs(height); y++)
+				{
+					SetScaledTile(map, end.x * scale, end.y * scale + y, TileType.Floor);
+				}
+			}
+			else // height == 0
+			{
+				for (int y = 0; y < Math.Abs(height); y++)
+				{
+					SetScaledTile(map, end.x * scale, start.y * scale + y, TileType.Floor);
+				}
 			}
 		}
 	}

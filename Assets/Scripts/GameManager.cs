@@ -10,19 +10,24 @@ public class GameManager : MonoBehaviour
 	public Tile groundTile;
 	public Tile wallTile;
 
-	public GameObject player;
+	public Rigidbody2D player;
 
 	[Min(10)]
 	public int gridWidth = 100;
 	[Min(10)]
 	public int gridHeight = 100;
 
+	[Min(1)]
+	public int gridScale = 2;
+
 	private DungeonGenerator generator;
 	private DungeonMap map;
 
 	void Start()
 	{
-		generator = new DungeonGenerator(gridWidth, gridHeight);
+		Random.InitState(42);
+
+		generator = new DungeonGenerator(gridWidth, gridHeight, gridScale);
 		map = generator.GenerateDungeon();
 		DrawMap(map.Tiles);
 		InitialisePlayer();
@@ -31,14 +36,29 @@ public class GameManager : MonoBehaviour
 
 	private void InitialisePlayer()
 	{
-		player.gameObject.transform.SetPositionAndRotation(new Vector3(0, 0, 0), Quaternion.identity);
+		var room = map.Leaf.GetRoom();
+
+		player.transform.SetPositionAndRotation(GridToTileSpace(room.Origin), Quaternion.identity);
+
+		Debug.Log(room.Origin);
+		Debug.Log(player.gameObject.transform.position);
+	}
+
+	private Vector3Int GridToTileSpace(Vector2Int origin)
+	{
+		return GridToTileSpace(origin.x, origin.y);
+	}
+
+	private Vector3Int GridToTileSpace(int x, int y)
+	{
+		return new Vector3Int(x - gridWidth / 2, y - gridHeight / 2, 0);
 	}
 
 	private void DrawMap(DungeonTile[,] tiles)
 	{
-		for (int x = 0; x < gridWidth; x++)
+		for (int x = 0; x < gridWidth * gridScale; x++)
 		{
-			for (int y = 0; y < gridHeight; y++)
+			for (int y = 0; y < gridHeight * gridScale; y++)
 			{
 				DungeonTile tile = tiles[x, y];
 
@@ -47,10 +67,14 @@ public class GameManager : MonoBehaviour
 					switch (tile.TileType)
 					{
 						case TileType.Floor:
-							groundMap.SetTile(new Vector3Int(x - gridWidth / 2, y - gridHeight / 2, 0), groundTile);
+							int tileX = x - gridWidth / 2;
+							int tileY = y - gridHeight / 2;
+							groundMap.SetTile(new Vector3Int(tileX, tileY, 0), groundTile);
 							break;
 						case TileType.Wall:
 							collisionMap.SetTile(new Vector3Int(x - gridWidth / 2, y - gridHeight / 2, 0), wallTile);
+							break;
+						case TileType.Empty:
 							break;
 						default:
 							break;

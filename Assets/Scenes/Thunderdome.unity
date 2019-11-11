@@ -161,8 +161,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 806699032}
   smoothing: 5
-  maxPosition: {x: 40, y: 40}
-  minPosition: {x: -40, y: -40}
+  maxPosition: {x: 100, y: 100}
+  minPosition: {x: -100, y: -100}
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -190,7 +190,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -245,6 +245,12 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!50 &806699031 stripped
+Rigidbody2D:
+  m_CorrespondingSourceObject: {fileID: 3856513522422561343, guid: 89b4e62ece77db54fb672f64a43bbd3d,
+    type: 3}
+  m_PrefabInstance: {fileID: 3856513522152897065}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &806699032 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3856513522422561329, guid: 89b4e62ece77db54fb672f64a43bbd3d,
@@ -465,27 +471,27 @@ Tilemap:
     m_Data:
       e00: NaN
       e01: NaN
-      e02: -2.1567587e-29
+      e02: -1.0375292e+14
       e03: 0
       e10: NaN
       e11: NaN
-      e12: 3.35e-43
+      e12: 8.8e-44
       e13: 0
       e20: 0
-      e21: -2.1567563e-29
+      e21: -1.0375279e+14
       e22: 0
       e23: 0
       e30: 0
-      e31: 3.35e-43
+      e31: 8.8e-44
       e32: 0
       e33: 0
   m_TileColorArray:
   - m_RefCount: 0
-    m_Data: {r: 1.964742e-31, g: 1.964742e-31, b: 1.964742e-31, a: 1.964742e-31}
+    m_Data: {r: 1.8122905e-17, g: 1.8122905e-17, b: 1.8122905e-17, a: 1.8122905e-17}
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Origin: {x: -12, y: -5, z: 0}
-  m_Size: {x: 12, y: 8, z: 1}
+  m_Origin: {x: -12, y: -9, z: 0}
+  m_Size: {x: 32, y: 25, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
@@ -583,9 +589,10 @@ MonoBehaviour:
   collisionMap: {fileID: 1806060472}
   groundTile: {fileID: 11400000, guid: b1e0a648f2bc2704bb461bf232aa8dc0, type: 2}
   wallTile: {fileID: 11400000, guid: c2d42d01ce7b9be458d3a943e0f3e762, type: 2}
-  player: {fileID: 3856513522422561338, guid: 89b4e62ece77db54fb672f64a43bbd3d, type: 3}
+  player: {fileID: 806699031}
   gridWidth: 100
   gridHeight: 100
+  gridScale: 2
 --- !u!4 &2073890556
 Transform:
   m_ObjectHideFlags: 0
@@ -611,6 +618,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 3856513522422561343, guid: 89b4e62ece77db54fb672f64a43bbd3d,
+        type: 3}
+      propertyPath: m_BodyType
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3856513522422561343, guid: 89b4e62ece77db54fb672f64a43bbd3d,
+        type: 3}
+      propertyPath: m_GravityScale
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3856513522422561329, guid: 89b4e62ece77db54fb672f64a43bbd3d,
         type: 3}
@@ -676,16 +693,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SortingLayer
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3856513522422561343, guid: 89b4e62ece77db54fb672f64a43bbd3d,
-        type: 3}
-      propertyPath: m_BodyType
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3856513522422561343, guid: 89b4e62ece77db54fb672f64a43bbd3d,
-        type: 3}
-      propertyPath: m_GravityScale
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3856513522422561341, guid: 89b4e62ece77db54fb672f64a43bbd3d,
         type: 3}
