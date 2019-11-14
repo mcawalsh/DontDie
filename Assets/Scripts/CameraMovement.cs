@@ -1,13 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
+	[HideInInspector]
 	public Transform target;
 	[Min(1)]
 	public float smoothing;
+
+	[HideInInspector]
 	public Vector2 maxPosition;
+	[HideInInspector]
 	public Vector2 minPosition;
 
 	// Late update so that the camera moves after the player has moved in Update()

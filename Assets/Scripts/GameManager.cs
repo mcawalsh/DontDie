@@ -3,6 +3,7 @@ using UnityEngine.Tilemaps;
 
 public class GameManager : MonoBehaviour
 {
+	public CameraMovement cameraMovement;
 	public Tilemap groundMap;
 	public Tilemap collisionMap;
 
@@ -24,13 +25,24 @@ public class GameManager : MonoBehaviour
 
 	void Start()
 	{
-		Random.InitState(42);
+		SetupCamera();
+		SetupMap();
+		InitialisePlayer();
+	}
 
+	private void SetupMap()
+	{
 		generator = new DungeonGenerator(gridWidth, gridHeight, gridScale);
 		map = generator.GenerateDungeon();
 		DrawMap(map.Tiles);
-		InitialisePlayer();
 		AddCollisions();
+	}
+
+	private void SetupCamera()
+	{
+		cameraMovement.maxPosition = new Vector2(gridWidth * gridScale, gridHeight * gridScale);
+		cameraMovement.minPosition = new Vector2(-gridWidth * gridScale, -gridHeight * gridScale);
+		cameraMovement.target = player.transform;
 	}
 
 	private void InitialisePlayer()
@@ -38,9 +50,6 @@ public class GameManager : MonoBehaviour
 		var room = map.Leaf.GetRoom();
 
 		player.transform.SetPositionAndRotation(GridToTileSpace(room.Origin), Quaternion.identity);
-
-		Debug.Log(room.Origin);
-		Debug.Log(player.gameObject.transform.position);
 	}
 
 	private Vector3Int GridToTileSpace(Vector2Int origin)
@@ -50,7 +59,7 @@ public class GameManager : MonoBehaviour
 
 	private Vector3Int GridToTileSpace(int x, int y)
 	{
-		return new Vector3Int(x - gridWidth / 2, y - gridHeight / 2, 0);
+		return new Vector3Int(x * gridScale - gridWidth / 2, y * gridScale - gridHeight / 2, 0);
 	}
 
 	private void DrawMap(DungeonTile[,] tiles)
@@ -92,6 +101,6 @@ public class GameManager : MonoBehaviour
 		var collider = collisionMap.gameObject.AddComponent<TilemapCollider2D>();
 		collider.usedByComposite = true;
 
-		var comp = collisionMap.gameObject.AddComponent<CompositeCollider2D>();
+		collisionMap.gameObject.AddComponent<CompositeCollider2D>();
 	}
 }

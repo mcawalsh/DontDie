@@ -56,7 +56,7 @@ public class Leaf
 
 		if (Children.Count > 0)
 		{
-			if(Random.Range(0, 1) > 0.5f)
+			if (Random.Range(0f, 1f) > 0.5f)
 			{
 				return Children[0].GetRoom();
 			} else

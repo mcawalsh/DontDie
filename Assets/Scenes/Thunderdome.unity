@@ -585,6 +585,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3667d062399dc714c83b339ea5dc8d99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraMovement: {fileID: 519420030}
   groundMap: {fileID: 1479278606}
   collisionMap: {fileID: 1806060472}
   groundTile: {fileID: 11400000, guid: b1e0a648f2bc2704bb461bf232aa8dc0, type: 2}
