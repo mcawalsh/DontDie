@@ -70,13 +70,18 @@ public class DungeonGenerator
 		}
 	}
 
-	private void SetScaledTile(DungeonMap theMap, int x, int y, TileType tileType)
+	private void SetScaledTile(DungeonMap theMap, int x, int y, TileType tileType, IWallTiles wallTiles = null)
 	{
 		for (int xScale = 0; xScale < scale; xScale++)
 		{
 			for (int yScale = 0; yScale < scale; yScale++)
 			{
 				theMap.SetTile(x + xScale, y + yScale, tileType);
+
+				if (wallTiles != null)
+				{
+					AddVerticalWallsToCorridor(wallTiles, x + xScale, y + yScale);
+				}
 			}
 		}
 	}
@@ -134,16 +139,13 @@ public class DungeonGenerator
 		}
 	}
 
-	private void AddHorizontalWallsToCorridor(Corridor corridor, int x, int y)
+	private void AddVerticalWallsToCorridor(IWallTiles wallTiles, int x, int y)
 	{
-		corridor.wallTiles.Add(new Vector2Int(x, y - 1));
-		corridor.wallTiles.Add(new Vector2Int(x, y + scale));
-	}
+		wallTiles.wallTiles.Add(new Vector2Int(x - 1, y));
+		wallTiles.wallTiles.Add(new Vector2Int(x + 1, y));
 
-	private void AddVerticalWallsToCorridor(Corridor corridor, int x, int y)
-	{
-		corridor.wallTiles.Add(new Vector2Int(x - 1, y));
-		corridor.wallTiles.Add(new Vector2Int(x + scale, y));
+		wallTiles.wallTiles.Add(new Vector2Int(x, y + 1));
+		wallTiles.wallTiles.Add(new Vector2Int(x, y - 1));
 	}
 
 	private void CreateCorridorTile(Corridor corridor)
@@ -163,9 +165,8 @@ public class DungeonGenerator
 				{
 					int tileX = end.x * scale + x;
 					int tileY = end.y * scale;
-					SetScaledTile(map, tileX, tileY, TileType.Floor);
 
-					AddHorizontalWallsToCorridor(corridor, tileX, tileY);
+					SetScaledTile(map, tileX, tileY, TileType.Floor, corridor);
 				}
 
 				for (int y = 0; y < Math.Abs(height); y++)
@@ -173,8 +174,7 @@ public class DungeonGenerator
 					int tileX = start.x * scale;
 					int tileY = start.y * scale + y;
 
-					SetScaledTile(map, tileX, tileY, TileType.Floor);
-					AddVerticalWallsToCorridor(corridor, tileX, tileY);
+					SetScaledTile(map, tileX, tileY, TileType.Floor, corridor);
 				}
 			}
 			else if (height > 0) // Drawing End to Start
@@ -183,9 +183,8 @@ public class DungeonGenerator
 				{
 					int tileX = end.x * scale + x;
 					int tileY = start.y * scale;
-					SetScaledTile(map, tileX, tileY, TileType.Floor);
 
-					AddHorizontalWallsToCorridor(corridor, tileX, tileY);
+					SetScaledTile(map, tileX, tileY, TileType.Floor, corridor);
 				}
 
 				for (int y = 0; y < Math.Abs(height); y++)
@@ -193,8 +192,7 @@ public class DungeonGenerator
 					int tileX = end.x * scale;
 					int tileY = start.y * scale + y;
 
-					SetScaledTile(map, tileX, tileY, TileType.Floor);
-					AddVerticalWallsToCorridor(corridor, tileX, tileY);
+					SetScaledTile(map, tileX, tileY, TileType.Floor, corridor);
 				}
 			}
 			else // height == 0
@@ -204,8 +202,7 @@ public class DungeonGenerator
 					int tileX = end.x * scale + x;
 					int tileY = end.y * scale;
 					
-					SetScaledTile(map, tileX, tileY, TileType.Floor);
-					AddHorizontalWallsToCorridor(corridor, tileX, tileY);
+					SetScaledTile(map, tileX, tileY, TileType.Floor, corridor);
 				}
 			}
 		}
@@ -213,13 +210,12 @@ public class DungeonGenerator
 		{
 			if (height < 0) // Drawing End to Start
 			{
-				for (int x = 0; x < Math.Abs(width); x++)
+				for (int x = 0; x < Math.Abs(width) + 1; x++)
 				{
 					int tileX = start.x * scale + x;
 					int tileY = start.y * scale;
 
-					SetScaledTile(map, tileX, tileY, TileType.Floor);
-					AddHorizontalWallsToCorridor(corridor, tileX, tileY);
+					SetScaledTile(map, tileX, tileY, TileType.Floor, corridor);
 				}
 
 				for (int y = 0; y < Math.Abs(height) + 1; y++)
@@ -227,8 +223,7 @@ public class DungeonGenerator
 					int tileX = end.x * scale;
 					int tileY = end.y * scale + y;
 
-					SetScaledTile(map, tileX, tileY, TileType.Floor);
-					AddVerticalWallsToCorridor(corridor, tileX, tileY);
+					SetScaledTile(map, tileX, tileY, TileType.Floor, corridor);
 				}
 			}
 			else if (height > 0)// Drawing Start to End
@@ -238,16 +233,14 @@ public class DungeonGenerator
 					int tileX = start.x * scale + x;
 					int tileY = start.y * scale;
 
-					SetScaledTile(map, tileX, tileY, TileType.Floor);
-					AddHorizontalWallsToCorridor(corridor, tileX, tileY);
+					SetScaledTile(map, tileX, tileY, TileType.Floor, corridor);
 				}
 				for (int y = 0; y < Math.Abs(height); y++)
 				{
 					int tileX = end.x * scale;
 					int tileY = start.y * scale + y;
 
-					SetScaledTile(map, tileX, tileY, TileType.Floor);
-					AddVerticalWallsToCorridor(corridor, tileX, tileY);
+					SetScaledTile(map, tileX, tileY, TileType.Floor, corridor);
 				}
 			}
 			else // height == 0
@@ -257,8 +250,7 @@ public class DungeonGenerator
 					int tileX = start.x * scale + x;
 					int tileY = start.y * scale;
 
-					SetScaledTile(map, tileX, tileY, TileType.Floor);
-					AddHorizontalWallsToCorridor(corridor, tileX, tileY);
+					SetScaledTile(map, tileX, tileY, TileType.Floor, corridor);
 				}
 			}
 
@@ -272,8 +264,7 @@ public class DungeonGenerator
 					int tileX = end.x * scale;
 					int tileY = start.y * scale + y;
 
-					SetScaledTile(map, tileX, tileY, TileType.Floor);
-					AddVerticalWallsToCorridor(corridor, tileX, tileY);
+					SetScaledTile(map, tileX, tileY, TileType.Floor, corridor);
 				}
 			}
 			else if (height < 0)
@@ -283,8 +274,7 @@ public class DungeonGenerator
 					int tileX = end.x * scale;
 					int tileY = end.y * scale + y;
 
-					SetScaledTile(map, tileX, tileY, TileType.Floor);
-					AddVerticalWallsToCorridor(corridor, tileX, tileY);
+					SetScaledTile(map, tileX, tileY, TileType.Floor, corridor);
 				}
 			}
 			else // height == 0
@@ -294,8 +284,7 @@ public class DungeonGenerator
 					int tileX = end.x * scale;
 					int tileY = start.y * scale + y;
 
-					SetScaledTile(map, tileX, tileY, TileType.Floor);
-					AddVerticalWallsToCorridor(corridor, tileX, tileY);
+					SetScaledTile(map, tileX, tileY, TileType.Floor, corridor);
 				}
 			}
 		}
