@@ -1,11 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public interface IWallTiles
-{
-	public List<Vector2Int> wallTiles { get; }
-}
-
 public class Corridor : IWallTiles
 {
 	public Vector2Int start;
