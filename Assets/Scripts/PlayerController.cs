@@ -1,14 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-
-public enum PlayerState
-{
-	Walk,
-	Attack,
-	Interact
-}
-
 public class PlayerController : MonoBehaviour
 {
 	public Camera camera;
@@ -43,7 +35,7 @@ public class PlayerController : MonoBehaviour
 
 		animator.SetBool("attacking", false);
 		yield return new WaitForSeconds(.33f);
-  
+
 		currentState = PlayerState.Walk;
 	}
 
@@ -58,7 +50,8 @@ public class PlayerController : MonoBehaviour
 		if (Input.GetButtonDown("Attack") && currentState != PlayerState.Attack)
 		{
 			StartCoroutine(AttackRoutine());
-		} else if (moveVelocity != Vector2.zero)
+		}
+		else if (moveVelocity != Vector2.zero)
 		{
 			rb.MovePosition(rb.position + moveVelocity * Time.fixedDeltaTime);
 			animator.SetFloat("moveX", moveVelocity.x);
