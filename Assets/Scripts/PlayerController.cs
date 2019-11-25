@@ -1,9 +1,19 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
+
+
+public enum PlayerState
+{
+	Walk,
+	Attack,
+	Interact
+}
 
 public class PlayerController : MonoBehaviour
 {
 	public Camera camera;
 	public float speed;
+	private PlayerState currentState;
 
 	// private Vector2 moveInput;
 	private Rigidbody2D rb;
@@ -25,6 +35,18 @@ public class PlayerController : MonoBehaviour
 		moveVelocity = moveInput.normalized * speed;
 	}
 
+	private IEnumerator AttackRoutine()
+	{
+		animator.SetBool("attacking", true);
+		currentState = PlayerState.Attack;
+		yield return null; // Wait 1 frame
+
+		animator.SetBool("attacking", false);
+		yield return new WaitForSeconds(.33f);
+  
+		currentState = PlayerState.Walk;
+	}
+
 	private void FireProjectile()
 	{
 		Instantiate(projectiles[0], transform.position, projectiles[0].transform.rotation);
@@ -33,7 +55,10 @@ public class PlayerController : MonoBehaviour
 	// This is where you should put all your physics based adjustments
 	private void FixedUpdate()
 	{
-		if (moveVelocity != Vector2.zero)
+		if (Input.GetButtonDown("Attack") && currentState != PlayerState.Attack)
+		{
+			StartCoroutine(AttackRoutine());
+		} else if (moveVelocity != Vector2.zero)
 		{
 			rb.MovePosition(rb.position + moveVelocity * Time.fixedDeltaTime);
 			animator.SetFloat("moveX", moveVelocity.x);
