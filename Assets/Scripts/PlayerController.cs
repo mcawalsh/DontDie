@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-	public Camera camera;
 	public float speed;
 	private PlayerState currentState;
 
@@ -14,6 +13,8 @@ public class PlayerController : MonoBehaviour
 	public GameObject[] projectiles;
 
 	private Animator animator;
+
+	public float knockbackThrust = 5;
 
 	private void Start()
 	{

@@ -9,13 +9,12 @@ public class Enemy : MonoBehaviour
 	public int baseAttack;
 	public float moveSpeed;
 
-    void Start()
-    {
-        
-    }
+	void Start()
+	{
+	}
 
-    void Update()
-    {
-        
-    }
+	void Update()
+	{
+
+	}
 }

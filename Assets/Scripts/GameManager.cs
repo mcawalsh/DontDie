@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
 	public Tile wallTile;
 
 	public Rigidbody2D player;
+	public Rigidbody2D enemy;
 
 	[Min(10)]
 	public int gridWidth = 100;
@@ -50,6 +51,9 @@ public class GameManager : MonoBehaviour
 		var room = map.Leaf.GetRoom();
 
 		player.transform.SetPositionAndRotation(GridToTileSpace(room.Origin), Quaternion.identity);
+
+		Vector2Int enemyPos = new Vector2Int(room.Origin.x + 2, room.Origin.y + 2);
+		enemy.transform.SetPositionAndRotation(GridToTileSpace(enemyPos), Quaternion.identity);
 	}
 
 	private Vector3Int GridToTileSpace(Vector2Int origin)

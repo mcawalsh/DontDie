@@ -24,7 +24,7 @@ public class Log : Enemy
 	{
 		float currentDistance = Vector3.Distance(target.position, transform.position);
 
-		if (currentDistance <= chaseRadius)
+		if (currentDistance <= chaseRadius && currentDistance >= attackRadius)
 		{
 			animator.SetBool("wakeUp", true);
 			transform.position = Vector3.MoveTowards(transform.position, target.position, moveSpeed * Time.deltaTime);
