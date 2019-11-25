@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5356739792588131960}
   m_Layer: 0
   m_Name: Left Hit Box
-  m_TagString: Untagged
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -41,7 +41,7 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -56,8 +56,10 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.38820985, y: 0.594536}
-      - {x: -0.7526381, y: 0.20549424}
+    - - {x: -0.07483107, y: 0.6863009}
+      - {x: -0.9697826, y: 0.8362284}
+      - {x: -1.0094364, y: 0.14507116}
+      - {x: -0.9573407, y: -0.70557225}
       - {x: -0.55327773, y: -0.76588255}
       - {x: -0.13687351, y: -0.65373284}
       - {x: 0.0107252, y: -0.010178149}
@@ -73,7 +75,7 @@ GameObject:
   - component: {fileID: 7164427792795993073}
   m_Layer: 0
   m_Name: Right Hit Box
-  m_TagString: Untagged
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -102,7 +104,7 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -120,8 +122,8 @@ PolygonCollider2D:
     - - {x: 0.19841844, y: 0.59453595}
       - {x: 0.19632047, y: 0.16235963}
       - {x: 0.13687402, y: -0.6364792}
-      - {x: 0.4325016, y: -0.6709866}
-      - {x: 0.6749959, y: 0.024329484}
+      - {x: 0.94609815, y: -0.7087511}
+      - {x: 0.9695585, y: 0.0016707182}
 --- !u!1 &3856513522422561338
 GameObject:
   m_ObjectHideFlags: 0
@@ -136,9 +138,10 @@ GameObject:
   - component: {fileID: 3856513522422561340}
   - component: {fileID: 3856513522422561341}
   - component: {fileID: 806699028}
+  - component: {fileID: 1256631997}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -222,8 +225,8 @@ Rigidbody2D:
   m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
+  m_UseAutoMass: 1
+  m_Mass: 0.4224564
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
@@ -270,9 +273,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2cdfe70d7f9edb4b9760a7f2af6600b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera: {fileID: 0}
   speed: 4
   projectiles: []
+  knockbackThrust: 5
 --- !u!95 &806699028
 Animator:
   serializedVersion: 3
@@ -292,6 +295,20 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1256631997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3856513522422561338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c6534917ce2d3c40aa38139b1c2c6de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  knockbackThrust: 2
+  knockTime: 0.4
 --- !u!1 &4857986857271356956
 GameObject:
   m_ObjectHideFlags: 0
@@ -304,7 +321,7 @@ GameObject:
   - component: {fileID: 3218377421678292657}
   m_Layer: 0
   m_Name: Up Hit Box
-  m_TagString: Untagged
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -333,7 +350,7 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -348,13 +365,14 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.051761135, y: 0.8188352}
-      - {x: -0.46795022, y: 0.5850776}
-      - {x: -0.56311095, y: 0.43498358}
+    - - {x: -0.013996825, y: 0.97744596}
+      - {x: -0.69453704, y: 0.917405}
+      - {x: -0.7638408, y: 0.3074625}
+      - {x: -0.6915101, y: 0.102656186}
       - {x: -0.38073975, y: -0.08435795}
       - {x: -0.0063114166, y: -0.1400891}
       - {x: 0.57915866, y: -0.118865386}
-      - {x: 0.59735376, y: 0.4901819}
+      - {x: 0.6804355, y: 0.84516776}
 --- !u!1 &5114301681428382168
 GameObject:
   m_ObjectHideFlags: 0
@@ -367,7 +385,7 @@ GameObject:
   - component: {fileID: 2685668064890375057}
   m_Layer: 0
   m_Name: Down Hit Box
-  m_TagString: Untagged
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -396,7 +414,7 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -413,6 +431,7 @@ PolygonCollider2D:
     m_Paths:
     - - {x: 0.060388736, y: -0.12149644}
       - {x: -0.52833897, y: -0.10507411}
-      - {x: -0.363486, y: -0.7400019}
-      - {x: 0.3893664, y: -0.78313625}
+      - {x: -0.60517853, y: -0.8986127}
+      - {x: -0.037044346, y: -0.95508045}
+      - {x: 0.38181353, y: -0.92664117}
       - {x: 0.5283384, y: -0.14820841}

@@ -8,8 +8,10 @@ public class Log : Enemy
 	public Transform homePosition;
 	private Animator animator;
 
-    void Start()
+    public override void Start()
     {
+		base.Start();
+
 		target = GameObject.FindWithTag("Player").transform;
 
 		animator = GetComponent<Animator>();
