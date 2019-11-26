@@ -48,9 +48,9 @@ public class PlayerController : MonoBehaviour
 	// This is where you should put all your physics based adjustments
 	private void FixedUpdate()
 	{
-		if (Input.GetButtonDown("Attack") && currentState != PlayerState.Attack)
+		if (Input.GetButtonDown("Attack"))
 		{
-			StartCoroutine(AttackRoutine());
+			animator.SetBool("attacking", true);
 		}
 		else if (moveVelocity != Vector2.zero)
 		{
@@ -63,5 +63,10 @@ public class PlayerController : MonoBehaviour
 		{
 			animator.SetBool("moving", false);
 		}
+	}
+
+	public void EndAttack()
+	{
+		animator.SetBool("attacking", false);
 	}
 }
